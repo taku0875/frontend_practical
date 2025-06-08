@@ -23,11 +23,19 @@ jobs:
           npm install
           npm run build
 
+      - name: Prepare standalone output
+        run: |
+          mkdir -p app
+          cp -r .next/standalone/* app/
+          cp -r .next/static app/.next/static
+          cp -r public app/public || true
+          cp next.config.js package.json app/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: .
+          path: app/
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,4 +51,4 @@ jobs:
         with:
           app-name: app-001-step3-1-suzuyu-node-9
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+          package: app
