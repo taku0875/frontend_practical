@@ -1,4 +1,5 @@
 "use client";
+
 import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
 import fetchCustomer from "./fetchCustomer";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,12 +11,13 @@ export default function ConfirmPage() {
   const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
+    if (!customer_id) return; // ← nullチェックも追加
     const fetchAndSetCustomer = async () => {
       const customerData = await fetchCustomer(customer_id);
-      setCustomer(customerData);
+      setCustomer(customerData[0]); // ←配列の1件目を使う
     };
     fetchAndSetCustomer();
-  }, []);
+  }, [customer_id]);
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function ConfirmPage() {
         <div className="alert alert-success p-4 text-center">
           正常に作成しました
         </div>
-        <OneCustomerInfoCard {...customer} />
+        {customer && <OneCustomerInfoCard {...customer} />}
         <button onClick={() => router.push("./../../customers")}>
           <div className="btn btn-primary m-4 text-2xl">戻る</div>
         </button>
