@@ -1,6 +1,5 @@
 name: Build and deploy Node.js app to Azure Web App - tech0-gen-9-step3-1-node-3
 
-
 on:
   push:
     branches:
@@ -60,6 +59,11 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D7D7608BBBFC476CB75971B41636D335 }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -67,5 +71,4 @@ jobs:
           app-name: 'tech0-gen-9-step3-1-node-3'
           slot-name: 'Production'
           package: ./deploy
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D7D7608BBBFC476CB75971B41636D335 }}
 
