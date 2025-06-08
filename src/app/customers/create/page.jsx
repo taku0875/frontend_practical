@@ -1,79 +1,32 @@
 "use client";
-import { useRef } from "react";
-import { useRouter } from "next/navigation";
+import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
+import fetchCustomer from "./fetchCustomer";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import createCustomer from "./createCustomer";
-
-export default function CreatePage() {
-  const formRef = useRef();
+export default function ConfirmPage() {
   const router = useRouter();
+  const customer_id = useSearchParams().get("customer_id");
+  const [customer, setCustomer] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(formRef.current);
-    const customerId = formData.get("customer_id")?.trim();
-
-    if (!customerId) {
-      alert("Customer IDは必須です。入力してください。");
-      return;
-    }
-
-    await createCustomer(formData);
-    router.push(`./create/confirm?customer_id=${customerId}`);
-  };
+  useEffect(() => {
+    const fetchAndSetCustomer = async () => {
+      const customerData = await fetchCustomer(customer_id);
+      setCustomer(customerData);
+    };
+    fetchAndSetCustomer();
+  }, []);
 
   return (
     <>
-      <div className="card bordered bg-white border-blue-200 border-2 max-w-md m-4">
-        <div className="m-4 card bordered bg-blue-200 duration-200 hover:border-r-red">
-          <form ref={formRef} onSubmit={handleSubmit}>
-            <div className="card-body">
-              <h2 className="card-title">
-                <p>
-                  <input
-                    type="text"
-                    name="customer_name"
-                    placeholder="桃太郎"
-                    className="input input-bordered"
-                  />
-                </p>
-              </h2>
-              <p>
-                Customer ID:
-                <input
-                  type="text"
-                  name="customer_id"
-                  placeholder="C030"
-                  className="input input-bordered"
-                  required  // ✅ HTMLレベルでも入力必須に
-                />
-              </p>
-              <p>
-                Age:
-                <input
-                  type="number"
-                  name="age"
-                  placeholder="30"
-                  className="input input-bordered"
-                />
-              </p>
-              <p>
-                Gender:
-                <input
-                  type="text"
-                  name="gender"
-                  placeholder="女"
-                  className="input input-bordered"
-                />
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <button type="submit" className="btn btn-primary m-4 text-2xl">
-                作成
-              </button>
-            </div>
-          </form>
+      <div className="card bordered bg-white border-blue-200 border-2 max-w-sm m-4">
+        <div className="alert alert-success p-4 text-center">
+          正常に作成しました
         </div>
+        <OneCustomerInfoCard {...customer} />
+        <button onClick={() => router.push("./../../customers")}>
+          <div className="btn btn-primary m-4 text-2xl">戻る</div>
+        </button>
       </div>
     </>
   );
