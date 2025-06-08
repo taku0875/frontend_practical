@@ -5,31 +5,34 @@ import fetchCustomer from "./fetchCustomer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ConfirmPage() {
+export default function ConfirmContent() {
   const router = useRouter();
-  const customer_id = useSearchParams().get("customer_id");
+  const searchParams = useSearchParams();
+  const customer_id = searchParams.get("customer_id");
   const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
-    if (!customer_id) return; // ← nullチェックも追加
+    if (!customer_id) return;
     const fetchAndSetCustomer = async () => {
-      const customerData = await fetchCustomer(customer_id);
-      setCustomer(customerData[0]); // ←配列の1件目を使う
+      try {
+        const customerData = await fetchCustomer(customer_id);
+        setCustomer(customerData[0]);
+      } catch (error) {
+        console.error("Failed to fetch:", error);
+      }
     };
     fetchAndSetCustomer();
   }, [customer_id]);
 
   return (
-    <>
-      <div className="card bordered bg-white border-blue-200 border-2 max-w-sm m-4">
-        <div className="alert alert-success p-4 text-center">
-          正常に作成しました
-        </div>
-        {customer && <OneCustomerInfoCard {...customer} />}
-        <button onClick={() => router.push("./../../customers")}>
-          <div className="btn btn-primary m-4 text-2xl">戻る</div>
-        </button>
+    <div className="card bordered bg-white border-blue-200 border-2 max-w-sm m-4">
+      <div className="alert alert-success p-4 text-center">
+        正常に作成しました
       </div>
-    </>
+      {customer && <OneCustomerInfoCard {...customer} />}
+      <button onClick={() => router.push("./../../customers")}>
+        <div className="btn btn-primary m-4 text-2xl">戻る</div>
+      </button>
+    </div>
   );
 }
