@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
 
 async function fetchCustomer(id) {
@@ -10,8 +11,8 @@ async function fetchCustomer(id) {
   return res.json();
 }
 
-export default async function ReadPage({ params }) {
-  const { id } = params;
+export default async function ReadPage({ query }) {
+  const { id } = query;
   const customerInfo = await fetchCustomer(id);
 
   return (
