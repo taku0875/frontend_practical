@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir -p output
           cp -r .next/standalone/* output/
+          cp server.js output/server.js
           cp -r .next/static output/.next/
           [ -d public ] && cp -r public output/public
           cp -r node_modules output/node_modules
