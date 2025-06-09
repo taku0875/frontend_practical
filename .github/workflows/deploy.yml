@@ -26,7 +26,7 @@ jobs:
 
       - name: Prepare build output
         run: |
-          mkdir -p output/.next/static
+          mkdir -p output
           cp -r .next/standalone/* output/
           cp -r .next/static output/.next/
           [ -d public ] && cp -r public output/public
