@@ -26,14 +26,15 @@ jobs:
 
       - name: Prepare build output
         run: |
-          mkdir -p output
+          mkdir -p output/.next/static
           cp -r .next/standalone/* output/
-          cp server.js output/server.js
           cp -r .next/static output/.next/
           [ -d public ] && cp -r public output/public
           cp -r node_modules output/node_modules
           cp package.json output/
           cp next.config.js output/
+          cp server.js output/  # ← この行を追加！！
+
 
 
       - name: Upload artifact
