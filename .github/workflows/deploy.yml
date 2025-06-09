@@ -33,7 +33,7 @@ jobs:
           cp -r node_modules output/node_modules
           cp package.json output/
           cp next.config.js output/
-          cp server.js output/
+
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
