@@ -30,10 +30,8 @@ jobs:
           cp -r .next/standalone/* output/
           cp -r .next/static output/.next/
           [ -d public ] && cp -r public output/public
-          cp -r node_modules output/node_modules
-          cp package.json output/
+          cp server.js output/
           cp next.config.js output/
-          cp server.js output/  # ← この行を追加！！
 
 
 
