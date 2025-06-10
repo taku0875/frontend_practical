@@ -32,8 +32,7 @@ jobs:
           [ -d public ] && cp -r public output/public
           cp server.js output/
           cp next.config.js output/
-
-
+          cp -R node_modules/.next output/.next
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
